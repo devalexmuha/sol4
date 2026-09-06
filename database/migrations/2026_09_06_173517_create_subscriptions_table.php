@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,10 +12,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tags', function (Blueprint $table) {
+        Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(User::class, 'subscribed_to')->index()->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(User::class, 'subscriber')->index()->constrained()->cascadeOnDelete();
             $table->timestamps();
-
         });
     }
 
@@ -23,10 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tags');
+        Schema::dropIfExists('subscriptions');
     }
 };
-
-// watch cource, find out how it works in raw sql. (join on)
-
-
