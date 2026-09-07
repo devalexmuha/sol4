@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('subscriptions', function (Blueprint $table) {
-            $table->id();
+            $table->primary(['subscriber', 'subscribed_to']);
             $table->foreignIdFor(User::class, 'subscribed_to')->index()->constrained()->cascadeOnDelete();
             $table->foreignIdFor(User::class, 'subscriber')->index()->constrained()->cascadeOnDelete();
             $table->timestamps();

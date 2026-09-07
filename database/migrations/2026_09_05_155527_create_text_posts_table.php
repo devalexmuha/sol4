@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('text_posts', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignIdFor(User::class)->index()->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->string('content');
         });
     }
