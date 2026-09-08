@@ -13,7 +13,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('comments', function (Blueprint $table) {
-            $table->id();
             $table->timestamps();
             $table->text('body');
             $table->morphs('commentable');

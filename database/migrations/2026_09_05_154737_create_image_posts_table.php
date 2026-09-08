@@ -17,7 +17,6 @@ return new class extends Migration
             $table->timestamps();
             $table->foreignIdFor(User::class )->constrained()->cascadeOnDelete();
             $table->string('image_title')->nullable();
-            $table->string('image_uri');
         });
     }
 

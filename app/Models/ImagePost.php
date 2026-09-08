@@ -28,4 +28,8 @@ class ImagePost extends Model
     {
         return $this->morphToMany(Tag::class, 'taggable');
     }
+
+    public function media(): MorphToMany {
+        return $this->morphToMany(Media::class, 'mediable');
+    }
 }

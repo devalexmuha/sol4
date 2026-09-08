@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\ImagePost;
+use App\Models\Media;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,8 +14,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('mediables', function (Blueprint $table) {
-            $table->id();
             $table->timestamps();
+            $table->morphs('mediable');
+            $table->foreignIdFor(Media::class)->constrained()->cascadeOnDelete();
+            $table->primary(['mediable_id', 'mediable_type', 'media_id']);
         });
     }
 

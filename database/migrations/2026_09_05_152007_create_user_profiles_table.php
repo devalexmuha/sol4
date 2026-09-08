@@ -17,7 +17,6 @@ return new class extends Migration
             $table->timestamps();
             $table->foreignIdFor(User::class)->unique()->constrained()->cascadeOnDelete();
             $table->string('user_name');
-            $table->string('avatar_uri')->nullable();
             $table->text('user_bio')->nullable();
         });
     }
