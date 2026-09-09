@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('media', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->text('media_uri');
             $table->text('media_alt');
+            $table->timestamps();
         });
     }
 

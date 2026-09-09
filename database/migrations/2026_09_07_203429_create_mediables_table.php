@@ -14,10 +14,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('mediables', function (Blueprint $table) {
-            $table->timestamps();
+            $table->id();
             $table->morphs('mediable');
             $table->foreignIdFor(Media::class)->constrained()->cascadeOnDelete();
-            $table->primary(['mediable_id', 'mediable_type', 'media_id']);
+            $table->unique(['media_id', 'mediable_id', 'mediable_type']);
+            $table->timestamps();
         });
     }
 

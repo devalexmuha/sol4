@@ -13,10 +13,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('likes', function (Blueprint $table) {
+            $table->id();
             $table->morphs('likeable');
-            $table->timestamps();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
-            $table->primary(['likeable_id', 'likeable_type', 'user_id']);
+            $table->unique(['user_id', 'likeable_type', 'likeable_id']);
+            $table->timestamps();
         });
     }
 

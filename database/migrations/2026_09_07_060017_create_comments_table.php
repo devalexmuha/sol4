@@ -13,11 +13,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('comments', function (Blueprint $table) {
-            $table->timestamps();
+            $table->id();
             $table->text('body');
             $table->morphs('commentable');
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
-            $table->primary(['commentable_id', 'commentable_type', 'user_id']);
+            $table->timestamps();
         });
     }
 
