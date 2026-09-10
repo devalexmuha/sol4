@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ImagePost;
 use App\Models\TextPost;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ImagePostController extends Controller
@@ -13,18 +14,8 @@ class ImagePostController extends Controller
      */
     public function index()
     {
-        $imagePosts = ImagePost::all();
-        $imageData = [];
-        foreach ($imagePosts as $imagePost) {
-            $user = $imagePost->user;
-            $title = $imagePost->imageTitle;
-            $comments = $imagePost->comments;
-            $likes = $imagePost->likes;
-            $tags = $imagePost->tags;
-            $image = $imagePost->media;
-            $imageData[] = [$user, $title, $comments, $likes, $tags, $image];
-        }
-        return view('index', compact('imageData'));
+        $imagePosts = ImagePost::with(['user', 'comments', 'likes', 'tags', 'media'])->get();
+        return view('image-posts.index', compact('imagePosts'));
     }
     /**
      * Show the form for creating a new resource.

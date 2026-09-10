@@ -20,7 +20,7 @@ class ImagePostFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'content' => fake()->realText(rand(40, 200)),
+            'image_title' => fake()->realText(rand(40, 200)),
         ];
     }
 }

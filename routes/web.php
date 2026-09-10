@@ -7,9 +7,21 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [ImagePostController::class, 'index']);
 Route::get('/echoes', [TextPostController::class, 'index']);
 
-// Service Pattern, SOLID, KISS, DRY (find out how to use)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// db cashing (reset on create update new post or every 15 minutes)
 // introduce myself into automated testing
-
-
-// create seeders, factories, test your 500 queries with debugbar().
-// debugbar()->enable();
+// Service Pattern, SOLID, KISS, DRY (find out how to use)
