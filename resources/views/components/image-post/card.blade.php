@@ -10,7 +10,7 @@
     <a
         href="{{ url('/image-post/'.$post->id) }}"
         class="absolute inset-0 z-10"
-        aria-label="Open image post by {{ $post->user->name }}"
+        aria-label="Open image post by {{ $post->user->userProfile->user_name }}"
     ></a>
 
     <header class="flex items-center justify-between gap-4 border-b border-sol-line px-1 py-4 sm:px-2">
@@ -22,7 +22,7 @@
 
             <span class="min-w-0">
                 <span class="block truncate font-display text-base font-bold text-sol-night transition group-hover:text-sol-mars">
-                    {{ $post->user->name }}
+                    {{ $post->user->userProfile->user_name }}
                 </span>
                 <span class="block font-body text-[10px] font-semibold uppercase tracking-[0.14em] text-sol-muted">
                     {{ $post->created_at->diffForHumans() }}

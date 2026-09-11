@@ -62,6 +62,3 @@ class User extends Authenticatable
         return $this->hasMany(Like::class);
     }
 }
-
-
-// check what you've done till this point, review many to many, watch morph and morph many to many, tie all db structure all together, start building.
