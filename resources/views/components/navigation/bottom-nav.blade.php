@@ -42,12 +42,12 @@
         @auth
             <div class="grid min-h-16 grid-cols-2 border-x border-sol-line">
                 <a
-                    href="{{ url('/image-post/create') }}"
-                    class="{{ request()->is('image-post/create')
+                    href="{{ url('/sol/create') }}"
+                    class="{{ request()->is('sol/create')
                         ? 'border-sol-orange bg-sol-paper text-sol-mars'
                         : 'border-transparent text-sol-muted hover:bg-sol-paper hover:text-sol-orange'
                     }} group relative grid place-items-center border-t-2 transition"
-                    @if(request()->is('image-post/create')) aria-current="page" @endif
+                    @if(request()->is('sol/create')) aria-current="page" @endif
                     aria-label="Create image post"
                     title="Create image post"
                 >
@@ -72,12 +72,12 @@
                 </a>
 
                 <a
-                    href="{{ url('/text-post/create') }}"
-                    class="{{ request()->is('text-post/create')
+                    href="{{ url('ehoes/create') }}"
+                    class="{{ request()->is('ehoes/create')
                         ? 'border-sol-orange bg-sol-paper text-sol-mars'
                         : 'border-transparent text-sol-muted hover:bg-sol-paper hover:text-sol-orange'
                     }} group relative grid place-items-center border-l border-t-2 border-l-sol-line transition"
-                    @if(request()->is('text-post/create')) aria-current="page" @endif
+                    @if(request()->is('ehoes/create')) aria-current="page" @endif
                     aria-label="Create text post"
                     title="Create text post"
                 >

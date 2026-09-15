@@ -20,32 +20,23 @@
             </span>
         </a>
 
-        @php
-            $profileActive = request()->is('profile*');
-        @endphp
-
         <div class="flex items-center gap-2">
             @auth
                 @php
                     $headerUser = auth()->user();
-                    $headerName = $headerUser->userProfile?->user_name
-                        ?: $headerUser->name;
+                    $headerName = $headerUser->userProfile->user_name;
                 @endphp
 
                 <a
                     href="{{ url('/profile') }}"
-                    class="{{ $profileActive
-                ? 'border-sol-orange bg-sol-paper text-sol-mars'
-                : 'border-sol-line text-sol-muted hover:border-sol-orange hover:text-sol-mars'
-            }} flex h-11 min-w-0 items-center gap-2 border px-2.5 transition"
-                    @if ($profileActive) aria-current="page" @endif
+                    class="text-sol-mars flex h-11 min-w-0 items-center gap-2 px-2.5 transition"
                     aria-label="Open profile"
                 >
-                    <x-user.avatar :user="$headerUser" size="sm" />
+                    <x-user.avatar :user="$headerUser" size="sm"/>
 
                     <span class="hidden max-w-32 truncate font-display text-sm font-bold text-sol-night sm:block">
-                {{ $headerName }}
-            </span>
+                        {{ $headerName }}
+                    </span>
                 </a>
             @else
                 <a

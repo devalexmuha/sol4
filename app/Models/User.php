@@ -51,7 +51,7 @@ class User extends Authenticatable
     }
 
     public function imagePosts(): HasMany{
-        return $this->hasMany(imagePost::class);
+        return $this->hasMany(ImagePost::class);
     }
 
     public function comments(): HasMany{
@@ -60,5 +60,14 @@ class User extends Authenticatable
 
     public function likes(): HasMany{
         return $this->hasMany(Like::class);
+    }
+
+    // **********
+
+    public function profileUrl(): string
+    {
+        return auth()->id() === $this->id
+            ? url('/profile')
+            : url('/users/'.$this->id);
     }
 }

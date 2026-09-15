@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AuthRequest;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
@@ -21,7 +21,7 @@ class SessionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(AuthRequest $request)
+    public function store(LoginRequest $request)
     {
         $validated = $request->validated();
 

@@ -8,14 +8,14 @@
 
 <article {{ $attributes->class('relative w-full overflow-hidden rounded-sol bg-sol-panel') }}>
     <a
-        href="{{ url('/image-post/'.$post->id) }}"
+        href="{{ url('/sol/'.$post->id) }}"
         class="absolute inset-0 z-10"
         aria-label="Open image post by {{ $post->user->userProfile->user_name }}"
     ></a>
 
     <header class="flex items-center justify-between gap-4 border-b border-sol-line px-1 py-4 sm:px-2">
         <a
-            href="{{ url('/profile/'.$post->user->id) }}"
+            href="{{ $post->user->profileUrl() }}"
             class="group relative z-20 flex min-w-0 items-center gap-3"
         >
             <x-user.avatar :user="$post->user" />
@@ -63,7 +63,7 @@
             </div>
 
             <a
-                href="{{ url('/image-post/'.$post->id) }}#comments"
+                href="{{ url('/sol/'.$post->id) }}#comments"
                 class="relative z-20 flex items-center gap-2 font-body text-sm font-bold text-sol-night transition hover:text-sol-mars"
                 aria-label="{{ $commentsCount }} comments"
             >
