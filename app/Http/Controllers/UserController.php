@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
@@ -14,7 +13,21 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        if (request()->has('search') && trim(request('search')) === '') {
+            return redirect('/users');
+        }
+
+        $search = trim((string) request()->query('search', ''));
+        $term = '%'.addcslashes($search, '%_\\').'%';
+
+        $users = User::with(['userProfile.media'])
+            ->withCount('subscribers')
+            ->whereHas('userProfile', function ($query) use ($term) {
+                $query->where('user_name', 'like', $term);
+            })
+            ->orderByDesc('subscribers_count')->get();
+
+        return view('users.index', compact('users'));
     }
 
     /**
@@ -22,7 +35,26 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        $postType = request()->query('post_type', 'images');
+
+        abort_unless(
+            in_array($postType, ['images', 'echoes'], true),
+            404
+        );
+
+        $user->load(['userProfile.media'])
+             ->loadCount(['subscribedTo', 'subscribers', 'imagePosts', 'textPosts']);
+
+        $posts = (match ($postType) {
+            'echoes' => $user->textPosts()
+                ->latest(),
+
+            default => $user->imagePosts()
+                ->with('media')
+                ->latest(),
+        })->get();
+
+        return view('users.show', compact('user', 'posts'));
     }
 
     /**
@@ -35,6 +67,7 @@ class UserController extends Controller
         Auth::logout();
         session()->invalidate();
         session()->regenerateToken();
+
         return redirect('/');
     }
 }

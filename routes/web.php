@@ -44,12 +44,13 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [RegisterController::class, 'store']);
 });
 
-//write policies
-// fix: header missing user image
-// work with users (profiles, edit profile, policy..., show listing of other users)
-// work over posts
-// add at main index / avalible tags in one line, filter by them with get param
-// add a sprincle of js for likes, comments and subscriptions
+// git checkout, switch
+// merge profiles and users into users, on users index show top 10 users by subsriptions if query has search than show searh result
+// profiles will be shown by user name, if current auth user id same as userPforfile->user_id than user can edit this profile
+// fix on post listing pages separation btw users and profile
+// /profile/dev.alex.muha/subsribers / /subsriptions (will I have two controllers? for this?)
+// add at main index / available tags in one line, filter by them with get param
+// add a sprinkle of js for likes, comments and subscriptions
 // seed db with more realistic data
 // enable db cashing (reset on create update new post or every 15 minutes)
 // create custom 404 page

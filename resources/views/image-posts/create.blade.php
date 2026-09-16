@@ -1,28 +1,13 @@
-<x-layouts.app>
+<x-layouts.app title="New image · SOL4">
     <section class="mx-auto w-full max-w-300 pb-28 pt-10 sm:pt-16">
-        <header class="flex items-end justify-between gap-6">
-            <div>
-                <div class="flex items-center gap-3">
-                    <span class="h-px w-10 bg-sol-orange"></span>
+        <x-post.form-header
+            eyebrow="New transmission"
+            title="Create image post"
+            :cancel="url('/')"
+        />
 
-                    <p class="font-body text-[10px] font-bold uppercase tracking-[0.24em] text-sol-mars">
-                        New transmission
-                    </p>
-                </div>
-
-                <h1 class="mt-4 font-display text-3xl font-bold text-sol-night sm:text-4xl">
-                    Create image post
-                </h1>
-            </div>
-
-            <a
-                href="{{ url('/') }}"
-                class="font-body text-[10px] font-bold uppercase tracking-[0.18em] text-sol-muted transition hover:text-sol-mars"
-            >
-                Cancel
-            </a>
-        </header>
         <x-forms.error class="mt-6" />
+
         <form
             method="POST"
             action="{{ url('/sol') }}"
@@ -91,50 +76,7 @@
             </div>
 
             {{-- Tags --}}
-            <fieldset class="mt-10">
-                <div class="flex items-center justify-between gap-4">
-                    <legend class="font-body text-[10px] font-bold uppercase tracking-[0.2em] text-sol-night">
-                        Tags
-                    </legend>
-
-                    <span class="font-body text-[9px] uppercase tracking-[0.16em] text-sol-muted">
-                        Select multiple
-                    </span>
-                </div>
-
-                <div class="mt-5 flex flex-wrap gap-x-6 gap-y-4">
-                    @forelse ($tags as $tag)
-                        <label class="group cursor-pointer">
-                            <input
-                                type="checkbox"
-                                name="tags[]"
-                                value="{{ $tag->id }}"
-                                class="peer sr-only"
-                                @checked(in_array(
-                                    (string) $tag->id,
-                                    array_map('strval', old('tags', [])),
-                                    true
-                                ))
-                            >
-
-                            <span
-                                class="block border-b border-sol-line px-1 py-2
-                                       font-body text-[10px] font-bold uppercase
-                                       tracking-[0.14em] text-sol-muted transition
-                                       group-hover:border-sol-orange group-hover:text-sol-mars
-                                       peer-checked:border-sol-orange
-                                       peer-checked:text-sol-mars"
-                            >
-                                #{{ $tag->name }}
-                            </span>
-                        </label>
-                    @empty
-                        <p class="font-body text-sm text-sol-muted">
-                            No tags are available.
-                        </p>
-                    @endforelse
-                </div>
-            </fieldset>
+            <x-post.tag-picker :tags="$tags" :selected="old('tags', [])" class="mt-10" />
 
             <div class="mt-14 flex justify-end">
                 <button

@@ -1,38 +1,16 @@
-<x-layouts.app>
+<x-layouts.app title="Edit image · SOL4">
     @php
         $media = $imagePost->media->first();
-
-        $allTags = \App\Models\Tag::orderBy('name')->get();
-
-        $selectedTags = old('tags', $imagePost->tags->pluck('id')->all());
-        $selectedTags = array_map('strval', $selectedTags);
     @endphp
 
     <section class="mx-auto w-full max-w-300 pb-28 pt-10 sm:pt-16">
-        <header class="flex items-end justify-between gap-6">
-            <div>
-                <div class="flex items-center gap-3">
-                    <span class="h-px w-10 bg-sol-orange"></span>
+        <x-post.form-header
+            eyebrow="Edit transmission"
+            title="Edit image post"
+            :cancel="url('/sol/'.$imagePost->id)"
+        />
 
-                    <p class="font-body text-[10px] font-bold uppercase tracking-[0.24em] text-sol-mars">
-                        Edit transmission
-                    </p>
-                </div>
-
-                <h1 class="mt-4 font-display text-3xl font-bold text-sol-night sm:text-4xl">
-                    Edit image post
-                </h1>
-            </div>
-
-            <a
-                href="{{ url('/sol/'.$imagePost->id) }}"
-                class="font-body text-[10px] font-bold uppercase tracking-[0.18em] text-sol-muted transition hover:text-sol-mars"
-            >
-                Cancel
-            </a>
-        </header>
-
-        <x-forms.error class="mt-6"/>
+        <x-forms.error class="mt-6" />
 
         <div class="mt-12 grid gap-12 lg:grid-cols-[22rem_minmax(0,1fr)] lg:gap-16">
             {{-- Current image (read-only) --}}
@@ -44,7 +22,7 @@
                 <div class="mt-4 overflow-hidden bg-sol-sand">
                     @if ($media)
                         <img
-                            src="{{ url($media->media_uri) }}"
+                            src="{{ $media->media_uri }}"
                             alt="{{ $media->media_alt ?: $imagePost->image_title }}"
                             class="w-full object-cover"
                         >
@@ -63,11 +41,7 @@
             </div>
 
             {{-- Editable fields --}}
-            <form
-                id="edit-form"
-                method="POST"
-                action="{{ url('/sol/'.$imagePost->id) }}"
-            >
+            <form id="edit-form" method="POST" action="{{ url('/sol/'.$imagePost->id) }}">
                 @csrf
                 @method('PATCH')
 
@@ -102,52 +76,16 @@
                 </div>
 
                 {{-- Tags --}}
-                <fieldset class="mt-10">
-                    <div class="flex items-center justify-between gap-4">
-                        <legend class="font-body text-[10px] font-bold uppercase tracking-[0.2em] text-sol-night">
-                            Tags
-                        </legend>
-
-                        <span class="font-body text-[9px] uppercase tracking-[0.16em] text-sol-muted">
-                            Select multiple
-                        </span>
-                    </div>
-
-                    <div class="mt-5 flex flex-wrap gap-x-6 gap-y-4">
-                        @forelse ($allTags as $tag)
-                            <label class="group cursor-pointer">
-                                <input
-                                    type="checkbox"
-                                    name="tags[]"
-                                    value="{{ $tag->id }}"
-                                    class="peer sr-only"
-                                    @checked(in_array((string) $tag->id, $selectedTags, true))
-                                >
-
-                                <span
-                                    class="block border-b border-sol-line px-1 py-2
-                                           font-body text-[10px] font-bold uppercase
-                                           tracking-[0.14em] text-sol-muted transition
-                                           group-hover:border-sol-orange group-hover:text-sol-mars
-                                           peer-checked:border-sol-orange
-                                           peer-checked:text-sol-mars"
-                                >
-                                    #{{ $tag->name }}
-                                </span>
-                            </label>
-                        @empty
-                            <p class="font-body text-sm text-sol-muted">
-                                No tags are available.
-                            </p>
-                        @endforelse
-                    </div>
-                </fieldset>
+                <x-post.tag-picker
+                    :tags="$tags"
+                    :selected="old('tags', $imagePost->tags->pluck('id')->all())"
+                    class="mt-10"
+                />
             </form>
         </div>
 
         {{-- Actions --}}
-        <div
-            class="mt-14 flex flex-col gap-4 border-t border-sol-line pt-8 sm:flex-row sm:items-center sm:justify-between">
+        <div class="mt-14 flex flex-col gap-4 border-t border-sol-line pt-8 sm:flex-row sm:items-center sm:justify-between">
             {{-- Delete (separate form) --}}
             <form
                 method="POST"

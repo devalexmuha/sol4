@@ -1,6 +1,7 @@
 @php
     $orbitActive = request()->is('/');
     $echoesActive = request()->is('echoes*');
+    $usersActive = request()->is('users*');
     $authenticated = auth()->check();
 @endphp
 
@@ -9,9 +10,12 @@
     aria-label="Primary navigation"
 >
     <div
-        class="{{ $authenticated ? 'grid-cols-3' : 'grid-cols-2' }} mx-auto grid w-full max-w-300 px-4 sm:px-6 lg:px-8"
+        class="{{ $authenticated
+            ? 'grid-cols-[1.15fr_repeat(3,minmax(0,1fr))_1.15fr]'
+            : 'grid-cols-2'
+        }} mx-auto grid w-full max-w-300 px-4 sm:px-6 lg:px-8"
     >
-        {{-- Image posts --}}
+        {{-- Image posts (left, wider) --}}
         <a
             href="{{ url('/') }}"
             class="{{ $orbitActive
@@ -38,71 +42,102 @@
             </span>
         </a>
 
-        {{-- Creation controls for authenticated users --}}
+        {{-- Center cluster: three equal columns for authenticated users --}}
         @auth
-            <div class="grid min-h-16 grid-cols-2 border-x border-sol-line">
-                <a
-                    href="{{ url('/sol/create') }}"
-                    class="{{ request()->is('sol/create')
-                        ? 'border-sol-orange bg-sol-paper text-sol-mars'
-                        : 'border-transparent text-sol-muted hover:bg-sol-paper hover:text-sol-orange'
-                    }} group relative grid place-items-center border-t-2 transition"
-                    @if(request()->is('sol/create')) aria-current="page" @endif
-                    aria-label="Create image post"
-                    title="Create image post"
+            {{-- Create image post --}}
+            <a
+                href="{{ url('/sol/create') }}"
+                class="{{ request()->is('sol/create')
+                    ? 'border-sol-orange bg-sol-paper text-sol-mars'
+                    : 'border-transparent text-sol-muted hover:bg-sol-paper hover:text-sol-orange'
+                }} group relative grid min-h-16 place-items-center border-l border-t-2 border-l-sol-line transition"
+                @if(request()->is('sol/create')) aria-current="page" @endif
+                aria-label="Create image post"
+                title="Create image post"
+            >
+                <svg
+                    class="size-7 transition group-hover:-translate-y-0.5"
+                    viewBox="0 0 28 28"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    aria-hidden="true"
                 >
-                    <svg
-                        class="size-7 transition group-hover:-translate-y-0.5"
-                        viewBox="0 0 28 28"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.5"
-                        aria-hidden="true"
-                    >
-                        <rect x="3.5" y="5.5" width="17" height="16"></rect>
-                        <circle cx="9" cy="10.5" r="1.5"></circle>
-                        <path d="m5.5 19 4.5-4.5 3 3 2.5-2.5 3 3"></path>
-                        <path d="M23 3.5v7M19.5 7h7"></path>
-                    </svg>
+                    <rect x="3.5" y="5.5" width="17" height="16"></rect>
+                    <circle cx="9" cy="10.5" r="1.5"></circle>
+                    <path d="m5.5 19 4.5-4.5 3 3 2.5-2.5 3 3"></path>
+                    <path d="M23 3.5v7M19.5 7h7"></path>
+                </svg>
 
-                    <span
-                        class="absolute bottom-2 size-1 bg-sol-orange opacity-0 transition group-hover:opacity-100"
-                        aria-hidden="true"
-                    ></span>
-                </a>
+                <span
+                    class="absolute bottom-2 size-1 bg-sol-orange opacity-0 transition group-hover:opacity-100"
+                    aria-hidden="true"
+                ></span>
+            </a>
 
-                <a
-                    href="{{ url('ehoes/create') }}"
-                    class="{{ request()->is('ehoes/create')
-                        ? 'border-sol-orange bg-sol-paper text-sol-mars'
-                        : 'border-transparent text-sol-muted hover:bg-sol-paper hover:text-sol-orange'
-                    }} group relative grid place-items-center border-l border-t-2 border-l-sol-line transition"
-                    @if(request()->is('ehoes/create')) aria-current="page" @endif
-                    aria-label="Create text post"
-                    title="Create text post"
+            {{-- Users (dead center) --}}
+            <a
+                href="{{ url('/users') }}"
+                class="{{ $usersActive
+                    ? 'border-sol-orange bg-sol-paper text-sol-mars'
+                    : 'border-transparent text-sol-muted hover:bg-sol-paper hover:text-sol-orange'
+                }} group relative grid min-h-16 place-items-center border-l border-t-2 border-l-sol-line transition"
+                @if($usersActive) aria-current="page" @endif
+                aria-label="Explorers"
+                title="Explorers"
+            >
+                <svg
+                    class="size-7 transition group-hover:-translate-y-0.5"
+                    viewBox="0 0 28 28"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    aria-hidden="true"
                 >
-                    <svg
-                        class="size-7 transition group-hover:-translate-y-0.5"
-                        viewBox="0 0 28 28"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.5"
-                        aria-hidden="true"
-                    >
-                        <path d="M4 7.5h11M4 12h9M4 16.5h7"></path>
-                        <path d="m14.5 21 1-4 7.5-7.5 3 3-7.5 7.5-4 1Z"></path>
-                        <path d="m21.5 11 3 3"></path>
-                    </svg>
+                    <circle cx="10.5" cy="10" r="3.5"></circle>
+                    <path d="M4 22c.7-4 3-6 6.5-6s5.8 2 6.5 6"></path>
+                    <path d="M18.5 7.6a3.2 3.2 0 0 1 0 6.3"></path>
+                    <path d="M19 16.4c2.6.4 4.3 2.2 5 5.6"></path>
+                </svg>
 
-                    <span
-                        class="absolute bottom-2 size-1 bg-sol-orange opacity-0 transition group-hover:opacity-100"
-                        aria-hidden="true"
-                    ></span>
-                </a>
-            </div>
+                <span
+                    class="absolute bottom-2 size-1 bg-sol-orange opacity-0 transition group-hover:opacity-100"
+                    aria-hidden="true"
+                ></span>
+            </a>
+
+            {{-- Create text post --}}
+            <a
+                href="{{ url('/echoes/create') }}"
+                class="{{ request()->is('echoes/create')
+                    ? 'border-sol-orange bg-sol-paper text-sol-mars'
+                    : 'border-transparent text-sol-muted hover:bg-sol-paper hover:text-sol-orange'
+                }} group relative grid min-h-16 place-items-center border-x border-t-2 border-x-sol-line transition"
+                @if(request()->is('echoes/create')) aria-current="page" @endif
+                aria-label="Create text post"
+                title="Create text post"
+            >
+                <svg
+                    class="size-7 transition group-hover:-translate-y-0.5"
+                    viewBox="0 0 28 28"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    aria-hidden="true"
+                >
+                    <path d="M4 7.5h11M4 12h9M4 16.5h7"></path>
+                    <path d="m14.5 21 1-4 7.5-7.5 3 3-7.5 7.5-4 1Z"></path>
+                    <path d="m21.5 11 3 3"></path>
+                </svg>
+
+                <span
+                    class="absolute bottom-2 size-1 bg-sol-orange opacity-0 transition group-hover:opacity-100"
+                    aria-hidden="true"
+                ></span>
+            </a>
         @endauth
 
-        {{-- Text posts --}}
+        {{-- Text posts (right, wider) --}}
         <a
             href="{{ url('/echoes') }}"
             class="{{ $echoesActive

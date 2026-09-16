@@ -67,7 +67,7 @@
             </a>
 
             <a
-                href="{{ url('/text-post/create') }}"
+                href="{{ url('/echoes/create') }}"
                 class="group relative grid place-items-center text-sol-muted transition hover:bg-sol-paper hover:text-sol-orange"
                 aria-label="Create text post"
                 title="Create text post"

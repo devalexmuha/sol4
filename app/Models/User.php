@@ -70,4 +70,9 @@ class User extends Authenticatable
             ? url('/profile')
             : url('/users/'.$this->id);
     }
+
+    public function displayName(): string
+    {
+        return $this->userProfile?->user_name ?? $this->email;
+    }
 }

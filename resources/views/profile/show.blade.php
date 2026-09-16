@@ -152,7 +152,7 @@
                             </p>
 
                             <a
-                                href="{{ url('/text-post/create') }}"
+                                href="{{ url('/echoes/create') }}"
                                 class="mt-4 inline-block font-body text-xs font-bold uppercase tracking-[0.16em] text-sol-mars hover:text-sol-orange"
                             >
                                 Write the first echo

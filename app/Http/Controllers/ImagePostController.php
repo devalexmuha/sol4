@@ -15,8 +15,7 @@ class ImagePostController extends Controller
      */
     public function index()
     {
-        $imagePosts = ImagePost::with(['user', 'comments', 'likes', 'tags', 'media'])->latest('updated_at')->get();
-
+        $imagePosts = ImagePost::with(['user.userProfile.media', 'tags', 'media'])->withCount(['likes', 'comments'])->latest('updated_at')->get();
         return view('image-posts.index', compact('imagePosts'));
     }
 
@@ -25,8 +24,7 @@ class ImagePostController extends Controller
      */
     public function create()
     {
-        $tags = Tag::all();
-
+        $tags = Tag::orderBy('name')->get();
         return view('image-posts.create', compact('tags'));
     }
 
@@ -52,8 +50,7 @@ class ImagePostController extends Controller
      */
     public function show(ImagePost $imagePost)
     {
-        $imagePost->load(['user.userProfile', 'comments.user.userProfile', 'likes', 'tags', 'media']);
-
+        $imagePost->load(['user.userProfile.media', 'comments.user.userProfile.media', 'likes', 'tags', 'media']);
         return view('image-posts.show', compact('imagePost'));
     }
 
@@ -64,8 +61,8 @@ class ImagePostController extends Controller
     {
         Gate::authorize('modify', $imagePost);
         $imagePost->load(['tags', 'media']);
-
-        return view('image-posts.edit', compact('imagePost'));
+        $tags = Tag::orderBy('name')->get();
+        return view('image-posts.edit', compact('imagePost', 'tags'));
     }
 
     /**

@@ -15,7 +15,7 @@ class TextPostController extends Controller
      */
     public function index()
     {
-        $textPosts = TextPost::with(['user', 'comments', 'likes', 'tags'])->latest('updated_at')->withCount(['likes', 'tags'])->get();
+        $textPosts = TextPost::with(['user.userProfile.media', 'tags'])->withCount(['likes', 'comments'])->latest('updated_at')->get();
 
         return view('text-posts.index', compact('textPosts'));
     }
@@ -25,7 +25,7 @@ class TextPostController extends Controller
      */
     public function create()
     {
-        $tags = Tag::all();
+        $tags = Tag::orderBy('name')->get();
 
         return view('text-posts.create', compact('tags'));
     }
@@ -48,7 +48,7 @@ class TextPostController extends Controller
      */
     public function show(TextPost $textPost)
     {
-        $textPost->load(['user.userProfile', 'comments', 'likes', 'tags']);
+        $textPost->load(['user.userProfile', 'comments.user.userProfile.media', 'likes', 'tags']);
         return view('text-posts.show', compact('textPost'));
     }
 
@@ -59,7 +59,8 @@ class TextPostController extends Controller
     {
         Gate::authorize('modify', $textPost);
         $textPost->load(['user.userProfile', 'tags']);
-        return view('text-posts.edit', compact('textPost'));
+        $tags = Tag::orderBy('name')->get();
+        return view('text-posts.edit', compact('textPost', 'tags'));
     }
 
     /**
@@ -72,8 +73,7 @@ class TextPostController extends Controller
         $textPost->update([
             'content' => $validated['content'],
         ]);
-//        $textPost->tags()->sync($validated['tags']);
-        $textPost->tags()->attach($validated['tags']);
+        $textPost->tags()->sync($validated['tags']);
         return redirect('/echoes/' . $textPost->id);
     }
 
