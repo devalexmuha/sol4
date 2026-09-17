@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UserProfileRequest extends FormRequest
 {
@@ -23,9 +24,17 @@ class UserProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_name' => ['required', 'string', 'min:2', 'max:255'],
+            'user_name' => [
+                'required', 'string', 'min:2', 'max:255',
+                Rule::unique('user_profiles', 'user_name')
+                    ->ignore($this->route('userProfile')),
+                'regex:/^[a-zA-Z0-9]+([._-][a-zA-Z0-9]+)*$/'
+            ],
             'logo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,JPG,gif,webp,avif', 'max:2048'],
             'user_bio'=> ['nullable', 'string', 'min:2', 'max:500'],
         ];
     }
 }
+
+// Rule::unique('user_profiles', 'user_name')
+//                ->ignore($this->route('userProfile')), check this one.

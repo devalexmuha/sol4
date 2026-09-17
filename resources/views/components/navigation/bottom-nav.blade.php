@@ -1,7 +1,7 @@
 @php
     $orbitActive = request()->is('/');
     $echoesActive = request()->is('echoes*');
-    $usersActive = request()->is('users*');
+    $usersActive = request()->is('profiles*');
     $authenticated = auth()->check();
 @endphp
 
@@ -77,7 +77,7 @@
 
             {{-- Users (dead center) --}}
             <a
-                href="{{ url('/users') }}"
+                href="{{ url('/profiles') }}"
                 class="{{ $usersActive
                     ? 'border-sol-orange bg-sol-paper text-sol-mars'
                     : 'border-transparent text-sol-muted hover:bg-sol-paper hover:text-sol-orange'

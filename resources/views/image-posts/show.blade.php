@@ -52,7 +52,7 @@
                     <div class="relative overflow-hidden bg-sol-sand">
                         @if ($media)
                             <img
-                                src="{{ $media->media_uri }}"
+                                src="{{ url($media->media_uri) }}"
                                 alt="{{ $media->media_alt ?: $imagePost->image_title }}"
                                 class="max-h-[48rem] w-full object-cover"
                             >

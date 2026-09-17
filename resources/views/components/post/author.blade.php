@@ -10,7 +10,7 @@
 @endphp
 
 <a
-    href="{{ $user->profileUrl() }}"
+    href="{{ url('/profiles/' . $name) }}"
     {{ $attributes->class('group flex min-w-0 items-center gap-3') }}
 >
     <x-user.avatar :user="$user" :size="$size" />

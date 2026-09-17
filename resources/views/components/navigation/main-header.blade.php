@@ -1,5 +1,5 @@
 @php
-    $profileActive = request()->is('profile*');
+    $profileActive = request()->is('profiles*');
 @endphp
 
 <header class="fixed top-0 z-40 w-full bg-sol-panel/95 backdrop-blur">
@@ -28,7 +28,7 @@
                 @endphp
 
                 <a
-                    href="{{ url('/profile') }}"
+                    href="{{ url('/profiles/' . $headerName) }}"
                     class="text-sol-mars flex h-11 min-w-0 items-center gap-2 px-2.5 transition"
                     aria-label="Open profile"
                 >

@@ -13,46 +13,52 @@ use Illuminate\Support\Facades\Gate;
 class UserProfileController extends Controller
 {
     /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        if (request()->has('search') && trim(request('search')) === '') {
+            return redirect('/profiles');
+        }
+
+        $search = trim((string) request()->query('search', ''));
+        $term = '%'.addcslashes($search, '%_\\').'%';
+
+        $users = User::with(['userProfile.media'])
+                     ->withCount('subscribers')
+                     ->whereHas('userProfile', function ($query) use ($term) {
+                         $query->where('user_name', 'like', $term);
+                     })
+                     ->orderByDesc('subscribers_count')->limit(10)->get();
+
+        return view('profile.index', compact('users'));
+    }
+
+    /**
      * Display the specified resource.
      */
-    public function show(Request $request)
+    public function show(userProfile $userProfile)
     {
-        $postType = $request->query('post_type', 'images');
+        $postType = request()->query('post_type', 'images');
 
         abort_unless(
             in_array($postType, ['images', 'echoes'], true),
             404
         );
 
-        $user = Auth::user()->load('userProfile.media')
-            ->loadCount([
-                'subscribedTo',
-                'subscribers',
-                'imagePosts',
-                'textPosts',
-            ]);
+        $userProfile->load(['media', 'user']);
+        $userProfile->user->loadCount(['subscribedTo', 'subscribers', 'imagePosts', 'textPosts']);
 
         $posts = (match ($postType) {
-            'echoes' => $user->textPosts()
-                ->latest(),
+            'echoes' => $userProfile->user->textPosts()
+                             ->latest(),
 
-            default => $user->imagePosts()
-                ->with('media')
-                ->latest(),
+            default => $userProfile->user->imagePosts()
+                            ->with('media')
+                            ->latest(),
         })->get();
 
-        return view('profile.show', [
-            'user_profile' => $user->userProfile,
-
-            'subscriptions_count' => $user->subscribed_to_count,
-            'subscribers_count' => $user->subscribers_count,
-
-            'image_posts_count' => $user->image_posts_count,
-            'text_posts_count' => $user->text_posts_count,
-
-            'post_type' => $postType,
-            'posts' => $posts,
-        ]);
+        return view('profile.show', compact('userProfile', 'posts'));
     }
 
     /**
@@ -61,7 +67,7 @@ class UserProfileController extends Controller
     public function edit(UserProfile $userProfile)
     {
         Gate::authorize('modify', $userProfile);
-        $userProfile = $userProfile->load('media');
+        $userProfile->load(['media', 'user']);
 
         return view('profile.edit', compact('userProfile'));
     }
@@ -73,7 +79,7 @@ class UserProfileController extends Controller
     {
         Gate::authorize('modify', $userProfile);
         $validated = $request->validated();
-        $userProfile = $userProfile->load('media');
+        $userProfile->load(['media', 'user']);
         if ($request->hasFile('logo')) {
             $tmpImagePath = $request->image('logo')->store('tmp', 'local');
             ImageProfileHandler::dispatch($userProfile, $tmpImagePath);
@@ -83,6 +89,20 @@ class UserProfileController extends Controller
             'user_bio' => $validated['user_bio'],
         ]);
 
-        return redirect("/profile");
+        return redirect('/profiles/' . $userProfile->user_name);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(UserProfile $userProfile)
+    {
+        Gate::authorize('modify', $userProfile);
+        $userProfile->user->delete();
+        Auth::logout();
+        session()->invalidate();
+        session()->regenerateToken();
+
+        return redirect('/');
     }
 }

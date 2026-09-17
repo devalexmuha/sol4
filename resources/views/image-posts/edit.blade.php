@@ -22,7 +22,7 @@
                 <div class="mt-4 overflow-hidden bg-sol-sand">
                     @if ($media)
                         <img
-                            src="{{ $media->media_uri }}"
+                            src="{{ url($media->media_uri) }}"
                             alt="{{ $media->media_alt ?: $imagePost->image_title }}"
                             class="w-full object-cover"
                         >

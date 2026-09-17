@@ -12,6 +12,11 @@ class UserProfile extends Model
 
     use HasFactory;
 
+    public function getRouteKeyName(): string
+    {
+        return 'user_name';
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

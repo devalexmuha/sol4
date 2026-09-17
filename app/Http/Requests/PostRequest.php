@@ -25,7 +25,7 @@ class PostRequest extends FormRequest
         return $this->is('sol', 'sol/*') ?
             [
                 'image' => [
-                    $this->isMethod('post') ? 'required' : 'nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048', 'dimensions:max_width=4000,max_height=4000'
+                    $this->isMethod('post') ? 'required' : 'nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096', 'dimensions:max_width=8000,max_height=8000'
                 ],
                 'image_title' => ['required', 'string', 'max:255'],
                 'tags' => ['nullable', 'array'],

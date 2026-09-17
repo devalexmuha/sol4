@@ -77,7 +77,7 @@ class ImagePostController extends Controller
         ]);
         $imagePost->tags()->sync($validated['tags']);
 
-        return redirect('/');
+        return redirect('/sol/' . $imagePost->id);
     }
 
     /**

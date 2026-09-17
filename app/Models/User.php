@@ -64,13 +64,6 @@ class User extends Authenticatable
 
     // **********
 
-    public function profileUrl(): string
-    {
-        return auth()->id() === $this->id
-            ? url('/profile')
-            : url('/users/'.$this->id);
-    }
-
     public function displayName(): string
     {
         return $this->userProfile?->user_name ?? $this->email;

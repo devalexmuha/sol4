@@ -5,11 +5,12 @@ use App\Http\Controllers\Auth\SessionController;
 use App\Http\Controllers\ImagePostController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\TextPostController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ImagePostController::class, 'index']);
 Route::get('/echoes', [TextPostController::class, 'index']);
+Route::get('/profiles', [UserProfileController::class, 'index']);
+Route::get('/profiles/{userProfile}', [UserProfileController::class, 'show']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/sol/create', [ImagePostController::class, 'create']);
@@ -28,13 +29,10 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/logout', [SessionController::class, 'destroy']);
 
-    Route::get('/profile', [UserProfileController::class, 'show']);
-    Route::get('/profile/{userProfile}/edit', [UserProfileController::class, 'edit']);
-    Route::patch('/profile/{userProfile}', [UserProfileController::class, 'update']);
+    Route::get('/profiles/{userProfile}/edit', [UserProfileController::class, 'edit']);
+    Route::patch('/profiles/{userProfile}', [UserProfileController::class, 'update']);
+    Route::delete('/profiles/{userProfile}', [UserProfileController::class, 'destroy']);
 
-    Route::get('/users', [UserController::class, 'index']);
-    Route::get('/users/{user}', [UserController::class, 'show']);
-    Route::delete('/users/{user}', [UserController::class, 'destroy']);
 });
 
 Route::middleware('guest')->group(function () {
@@ -44,13 +42,10 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [RegisterController::class, 'store']);
 });
 
-// git checkout, switch
-// merge profiles and users into users, on users index show top 10 users by subsriptions if query has search than show searh result
-// profiles will be shown by user name, if current auth user id same as userPforfile->user_id than user can edit this profile
-// fix on post listing pages separation btw users and profile
-// /profile/dev.alex.muha/subsribers / /subsriptions (will I have two controllers? for this?)
-// add at main index / available tags in one line, filter by them with get param
+// /profile/dev.alex.muha/subsribers / /profile/dev.alex.muha/subsriptions (will I have two controllers? for this?)
+// add at main index / available tags in one line, filter by them with get param do it cross site with route /search/
 // add a sprinkle of js for likes, comments and subscriptions
+// fix why not all images I can publish
 // seed db with more realistic data
 // enable db cashing (reset on create update new post or every 15 minutes)
 // create custom 404 page

@@ -13,7 +13,7 @@
             </p>
         </div>
 
-        <form method="GET" action="{{ url('/users') }}" class="mt-5">
+        <form method="GET" action="{{ url('/profiles') }}" class="mt-5">
             <div class="flex items-center gap-3 border-b border-sol-line focus-within:border-sol-orange">
                 <svg
                     class="size-5 shrink-0 text-sol-muted"
@@ -38,7 +38,7 @@
 
                 @if ($search !== '')
                     <a
-                        href="{{ url('/users') }}"
+                        href="{{ url('/profiles') }}"
                         class="shrink-0 font-body text-[9px] font-bold uppercase tracking-[0.16em] text-sol-muted transition hover:text-sol-mars"
                     >
                         Clear
@@ -70,7 +70,7 @@
             @endphp
 
             <a
-                href="{{ url('/users/'.$user->id) }}"
+                href="{{ url('/profiles/' . $user->displayName()) }}"
                 class="group flex items-center gap-4 border-b border-sol-line py-5 transition first:border-t hover:bg-sol-paper/50"
             >
                 <x-user.avatar :user="$user" size="lg" />

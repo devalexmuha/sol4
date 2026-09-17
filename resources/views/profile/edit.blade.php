@@ -2,10 +2,10 @@
     $avatar = $userProfile->media->first();
 @endphp
 
-<x-layouts.profile title="Edit profile">
+<x-layouts.app title="Edit profile">
     <div class="mx-auto w-full max-w-300 px-4 pb-16 pt-7 sm:px-6 sm:pt-10 lg:px-8">
         <a
-        href="{{ url('/profile') }}"
+        href="{{ url('/profiles') }}"
         class="group inline-flex items-center gap-3 font-body text-[10px] font-bold uppercase tracking-[0.2em] text-sol-muted transition hover:text-sol-mars"
         >
         <svg
@@ -46,7 +46,7 @@
 
         <form
             method="POST"
-            action="{{ url('/profile/'.$userProfile->id) }}"
+            action="{{ url('/profiles/'.$userProfile->user_name) }}"
             enctype="multipart/form-data"
             class="mt-14"
         >
@@ -219,7 +219,7 @@
 
                 <form
                     method="POST"
-                    action="{{ url('/users/'.$userProfile->user_id) }}"
+                    action="{{ url('/profiles/'.$userProfile->user_name) }}"
                     onsubmit="return confirm('Delete your SOL4 account permanently?')"
                     class="flex flex-col items-end"
                 >
@@ -235,4 +235,4 @@
             </div>
         </section>
     </div>
-</x-layouts.profile>
+</x-layouts.app>

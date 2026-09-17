@@ -15,7 +15,7 @@
 
     <header class="flex items-center justify-between gap-4 border-b border-sol-line px-1 py-4 sm:px-2">
         <a
-            href="{{ $post->user->profileUrl() }}"
+            href="{{ url('/profiles/' . $post->user->userProfile->user_name) }}"
             class="group relative z-20 flex min-w-0 items-center gap-3"
         >
             <x-user.avatar :user="$post->user" />
