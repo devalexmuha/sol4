@@ -49,7 +49,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [RegisterController::class, 'store']);
 });
 
-// show on posts index: posts for whom I subscribed, then stat from who has the most subscribers
+
 // add at main index / available tags in one line, filter by them with get param do it cross site with route /search/
 // add a sprinkle of js for likes, comments and subscriptions
 // build restriction for guests: you need login to click likes comments and subscribe

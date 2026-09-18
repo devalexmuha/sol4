@@ -6,7 +6,6 @@ use App\Http\Requests\UserProfileRequest;
 use App\Jobs\ImageProfileHandler;
 use App\Models\User;
 use App\Models\UserProfile;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
@@ -25,11 +24,11 @@ class UserProfileController extends Controller
         $term = '%'.addcslashes($search, '%_\\').'%';
 
         $users = User::with(['userProfile.media'])
-                     ->withCount('subscribers')
-                     ->whereHas('userProfile', function ($query) use ($term) {
-                         $query->where('user_name', 'like', $term);
-                     })
-                     ->orderByDesc('subscribers_count')->limit(10)->get();
+            ->withCount('subscribers')
+            ->whereHas('userProfile', function ($query) use ($term) {
+                $query->where('user_name', 'like', $term);
+            })
+            ->orderByDesc('subscribers_count')->limit(10)->get();
 
         return view('profile.index', compact('users'));
     }
@@ -37,7 +36,7 @@ class UserProfileController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(userProfile $userProfile)
+    public function show(UserProfile $userProfile)
     {
         $postType = request()->query('post_type', 'images');
 
@@ -49,18 +48,20 @@ class UserProfileController extends Controller
         $userProfile->load(['media', 'user']);
         $userProfile->user->loadCount(['subscribedTo', 'subscribers', 'imagePosts', 'textPosts']);
 
+        $authUser = Auth::user();
+        $isSubscribed = $authUser && $authUser->isSubscribedTo($userProfile->user);
+        $isMine = $authUser && $authUser->id === $userProfile->user()->first()->id;
+
         $posts = (match ($postType) {
             'echoes' => $userProfile->user->textPosts()
-                             ->latest(),
+                ->latest(),
 
             default => $userProfile->user->imagePosts()
-                            ->with('media')
-                            ->latest(),
+                ->with('media')
+                ->latest(),
         })->get();
 
-        // $isSubscribed = its not a mine profile, $userProfile->user->subscribers() has mine $userProfile->user_id
-
-        return view('profile.show', compact('userProfile', 'posts'));
+        return view('profile.show', compact('userProfile', 'isSubscribed', 'isMine', 'posts'));
     }
 
     /**
@@ -91,7 +92,7 @@ class UserProfileController extends Controller
             'user_bio' => $validated['user_bio'],
         ]);
 
-        return redirect('/profiles/' . $userProfile->user_name);
+        return redirect('/profiles/'.$userProfile->user_name);
     }
 
     /**

@@ -68,4 +68,8 @@ class User extends Authenticatable
     {
         return $this->userProfile?->user_name ?? $this->email;
     }
+
+    public function isSubscribedTo(User $user): bool {
+        return $this->id !== $user->id && $this->subscribedTo()->whereKey($user->id)->exists();;
+    }
 }

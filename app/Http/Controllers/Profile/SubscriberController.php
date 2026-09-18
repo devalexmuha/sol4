@@ -24,14 +24,26 @@ class SubscriberController extends Controller
      */
     public function store(Request $request, UserProfile $userProfile)
     {
-        //
+        abort_if($request->user()->id === $userProfile->user_id, 403);
+
+        $userProfile->user->subscribers()->syncWithoutDetaching($request->user()->id);
+
+        return response()->json([
+            'subscribed'        => true,
+            'subscribers_count' => $userProfile->user->subscribers()->count(),
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(UserProfile $userProfile)
+    public function destroy(Request $request, UserProfile $userProfile)
     {
-        //
+        $userProfile->user->subscribers()->detach($request->user()->id);
+
+        return response()->json([
+            'subscribed'        => false,
+            'subscribers_count' => $userProfile->user->subscribers()->count(),
+        ]);
     }
 }
