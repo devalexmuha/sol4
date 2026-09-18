@@ -28,6 +28,11 @@ class DatabaseSeeder extends Seeder
 
         foreach ($users as $user) {
             $user->userProfile->media()->attach($media->random()->id);
+            $user->subscribedTo()->attach(
+                $users->where('id', '!==', $user->id)
+                      ->random(rand(0, 8))
+                      ->pluck('id')
+            );
         }
 
         $posts = collect();

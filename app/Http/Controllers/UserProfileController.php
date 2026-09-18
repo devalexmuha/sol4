@@ -58,6 +58,8 @@ class UserProfileController extends Controller
                             ->latest(),
         })->get();
 
+        // $isSubscribed = its not a mine profile, $userProfile->user->subscribers() has mine $userProfile->user_id
+
         return view('profile.show', compact('userProfile', 'posts'));
     }
 

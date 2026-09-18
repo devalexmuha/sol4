@@ -42,7 +42,8 @@
                             class="size-28 rounded-full object-cover sm:size-36"
                         >
                     @else
-                        <div class="grid size-28 place-items-center rounded-full bg-sol-night font-display text-4xl font-bold uppercase text-sol-sand sm:size-36">
+                        <div
+                            class="grid size-28 place-items-center rounded-full bg-sol-night font-display text-4xl font-bold uppercase text-sol-sand sm:size-36">
                             {{ \Illuminate\Support\Str::upper(\Illuminate\Support\Str::substr($name, 0, 1)) }}
                         </div>
                     @endif
@@ -57,15 +58,17 @@
                         <span class="h-px min-w-8 flex-1 bg-sol-orange"></span>
                         @can('modify', $userProfile)
                             <a
-                            href="{{ $base.'/edit' }}"
-                            class="group grid size-9 shrink-0 place-items-center rounded-full text-sol-muted transition hover:bg-sol-paper hover:text-sol-mars"
-                            aria-label="Edit profile"
-                            title="Edit profile"
+                                href="{{ $base.'/edit' }}"
+                                class="group grid size-9 shrink-0 place-items-center rounded-full text-sol-muted transition hover:bg-sol-paper hover:text-sol-mars"
+                                aria-label="Edit profile"
+                                title="Edit profile"
                             >
-                            <svg class="size-5 transition group-hover:rotate-45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-                                <circle cx="12" cy="12" r="3"></circle>
-                                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"></path>
-                            </svg>
+                                <svg class="size-5 transition group-hover:rotate-45" viewBox="0 0 24 24" fill="none"
+                                     stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                    <path
+                                        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"></path>
+                                </svg>
                             </a>
                         @endcan
                     </div>
@@ -78,31 +81,34 @@
 
                     <div class="mt-8 grid max-w-lg grid-cols-3 gap-6">
                         <div>
-                            <span class="block font-display text-2xl font-bold text-sol-night">
-                                {{ $user->image_posts_count + $user->text_posts_count }}
-                            </span>
-                            <span class="mt-1 block font-body text-[9px] font-bold uppercase tracking-[0.16em] text-sol-muted">
-                                Signals
-                            </span>
+        <span class="block font-display text-2xl font-bold text-sol-night">
+            {{ $user->image_posts_count + $user->text_posts_count }}
+        </span>
+                            <span
+                                class="mt-1 block font-body text-[9px] font-bold uppercase tracking-[0.16em] text-sol-muted">
+            Signals
+        </span>
                         </div>
 
-                        <div>
-                            <span class="block font-display text-2xl font-bold text-sol-night">
-                                {{ $user->subscribers_count }}
-                            </span>
-                            <span class="mt-1 block font-body text-[9px] font-bold uppercase tracking-[0.16em] text-sol-muted">
-                                Subscribers
-                            </span>
-                        </div>
+                        <a href="{{ $base.'/subscribers' }}" class="group block transition hover:text-sol-mars">
+        <span class="block font-display text-2xl font-bold text-sol-night transition group-hover:text-sol-mars">
+            {{ $user->subscribers_count }}
+        </span>
+                            <span
+                                class="mt-1 block font-body text-[9px] font-bold uppercase tracking-[0.16em] text-sol-muted transition group-hover:text-sol-mars">
+            Subscribers
+        </span>
+                        </a>
 
-                        <div>
-                            <span class="block font-display text-2xl font-bold text-sol-night">
-                                {{ $user->subscribed_to_count }}
-                            </span>
-                            <span class="mt-1 block font-body text-[9px] font-bold uppercase tracking-[0.16em] text-sol-muted">
-                                Subscriptions
-                            </span>
-                        </div>
+                        <a href="{{ $base.'/subscriptions' }}" class="group block transition hover:text-sol-mars">
+        <span class="block font-display text-2xl font-bold text-sol-night transition group-hover:text-sol-mars">
+            {{ $user->subscribed_to_count }}
+        </span>
+                            <span
+                                class="mt-1 block font-body text-[9px] font-bold uppercase tracking-[0.16em] text-sol-muted transition group-hover:text-sol-mars">
+            Subscriptions
+        </span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -119,7 +125,8 @@
                     }} group flex min-h-14 items-center justify-center gap-2 border-b-2 font-body transition"
                     @if(! $showEchoes) aria-current="page" @endif
                 >
-                    <svg class="size-5" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <svg class="size-5" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5"
+                         aria-hidden="true">
                         <rect x="3.5" y="5.5" width="21" height="16"></rect>
                         <circle cx="9" cy="10.5" r="1.5"></circle>
                         <path d="m5.5 19 4.5-4.5 3 3 2.5-2.5 6 6"></path>
@@ -138,7 +145,8 @@
                     }} group flex min-h-14 items-center justify-center gap-2 border-b-2 font-body transition"
                     @if($showEchoes) aria-current="page" @endif
                 >
-                    <svg class="size-5" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <svg class="size-5" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5"
+                         aria-hidden="true">
                         <path d="M4 7.5h11M4 12h9M4 16.5h7"></path>
                         <path d="m14.5 21 1-4 7.5-7.5 3 3-7.5 7.5-4 1Z"></path>
                         <path d="m21.5 11 3 3"></path>
@@ -202,7 +210,8 @@
                                     loading="lazy"
                                 >
                             @else
-                                <span class="grid size-full place-items-center px-5 text-center font-display text-sm font-bold text-sol-muted">
+                                <span
+                                    class="grid size-full place-items-center px-5 text-center font-display text-sm font-bold text-sol-muted">
                                     Image transmission unavailable
                                 </span>
                             @endif
