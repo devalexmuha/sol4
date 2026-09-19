@@ -26,4 +26,9 @@ class Tag extends Model
             'taggable'
         );
     }
+
+    public function getRouteKeyName(): string
+    {
+        return 'name';
+    }
 }

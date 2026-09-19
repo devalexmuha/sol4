@@ -6,11 +6,13 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ImagePostCommentController;
 use App\Http\Controllers\ImagePostController;
 use App\Http\Controllers\ImagePostLikeController;
+use App\Http\Controllers\ImagePostTagsController;
 use App\Http\Controllers\Profile\SubscriberController;
 use App\Http\Controllers\Profile\SubscriptionController;
 use App\Http\Controllers\TextPostCommentController;
 use App\Http\Controllers\TextPostController;
 use App\Http\Controllers\TextPostLikeController;
+use App\Http\Controllers\TextPostTagsController;
 use App\Http\Controllers\UserProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +29,9 @@ Route::get('/profiles', [UserProfileController::class, 'index']);
 Route::get('/profiles/{userProfile}', [UserProfileController::class, 'show']);
 Route::get('/profiles/{userProfile}/subscriptions', [SubscriptionController::class, 'index']);
 Route::get('/profiles/{userProfile}/subscribers', [SubscriberController::class, 'index']);
+
+Route::get('/sol/tag/{tag}', [ImagePostTagsController::class, 'index']);
+Route::get('/echoes/tag/{tag}', [TextPostTagsController::class, 'index']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/sol/create', [ImagePostController::class, 'create']);
@@ -61,8 +66,6 @@ Route::middleware('auth')->group(function () {
 
     Route::patch('/comments/{comment}',  [CommentController::class, 'update']);
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy']);
-
-
 
 });
 
