@@ -1,10 +1,5 @@
 @props(['post'])
 
-@php
-    $likesCount = $post->likes_count ?? $post->likes->count();
-    $commentsCount = $post->comments_count ?? $post->comments->count();
-@endphp
-
 <article {{ $attributes->class('relative w-full overflow-hidden rounded-sol bg-sol-panel') }}>
     <a
         href="{{ url('/echoes/'.$post->id) }}"
@@ -27,13 +22,13 @@
     </div>
 
     <div class="px-1 py-4 sm:px-2">
-        <x-post.stats
-            :likes="$likesCount"
-            :comments="$commentsCount"
+        <x-post.actions
+            :post="$post"
+            type="echoes"
             :commentsHref="url('/echoes/'.$post->id).'#comments'"
             class="mb-4"
         />
 
-        <x-post.tag-chips :tags="$post->tags" :limit="3" />
+        <x-post.tag-chips :tags="$post->tags" type="echoes" :limit="3" />
     </div>
 </article>

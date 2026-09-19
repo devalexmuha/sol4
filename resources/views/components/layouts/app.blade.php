@@ -7,11 +7,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#f5f0e7">
 
+    {{-- JS bootstrap: CSRF token + auth/login/register endpoints. --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="login-url" content="{{ url('/login') }}">
+    <meta name="register-url" content="{{ url('/register') }}">
+
     <title>{{ $title }}</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen font-body text-sol-ink antialiased">
+<body
+    class="min-h-screen font-body text-sol-ink antialiased"
+    @auth data-auth-id="{{ auth()->id() }}" @endauth
+>
 <div class="relative min-h-screen w-full overflow-x-hidden">
         <x-navigation.main-header/>
 

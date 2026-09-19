@@ -16,45 +16,55 @@
         >
             @csrf
 
-            {{-- Image --}}
+            {{-- Image + live preview --}}
             <div>
                 <div class="flex items-center justify-between gap-4">
-                    <label
-                        for="image"
-                        class="font-body text-[10px] font-bold uppercase tracking-[0.2em] text-sol-night"
-                    >
+                    <label for="image" class="font-body text-[10px] font-bold uppercase tracking-[0.2em] text-sol-night">
                         Image
                     </label>
-
                     <span class="font-body text-[9px] uppercase tracking-[0.16em] text-sol-muted">
                         JPG, PNG or WebP
                     </span>
                 </div>
 
-                <input
-                    id="image"
-                    name="image"
-                    type="file"
-                    accept="image/jpeg,image/png,image/webp"
-                    required
-                    class="mt-4 block w-full bg-sol-paper font-body text-sm text-sol-muted
-                           file:mr-5 file:border-0 file:bg-sol-night file:px-5 file:py-4
-                           file:font-body file:text-[10px] file:font-bold file:uppercase
-                           file:tracking-[0.18em] file:text-sol-panel
-                           hover:file:bg-sol-mars"
-                >
+                <div class="mt-4 grid gap-6 sm:grid-cols-[minmax(0,1fr)_16rem] sm:items-start">
+                    <div>
+                        <input
+                            id="image"
+                            name="image"
+                            type="file"
+                            accept="image/jpeg,image/png,image/webp"
+                            required
+                            data-image-preview
+                            data-preview-target="#image-preview"
+                            data-preview-img-class="size-full object-contain"
+                            data-preview-filename="#image-filename"
+                            class="block w-full bg-sol-paper font-body text-sm text-sol-muted
+                                   file:mr-5 file:border-0 file:bg-sol-night file:px-5 file:py-4
+                                   file:font-body file:text-[10px] file:font-bold file:uppercase
+                                   file:tracking-[0.18em] file:text-sol-panel hover:file:bg-sol-mars"
+                        >
+                        <p id="image-filename" class="mt-3 truncate font-body text-xs text-sol-muted"></p>
+                    </div>
+
+                    {{-- Preview frame --}}
+                    <div
+                        id="image-preview"
+                        class="flex aspect-[4/5] w-full items-center justify-center overflow-hidden rounded-sol bg-sol-paper"
+                    >
+                        <span class="px-6 text-center font-body text-[10px] font-bold uppercase tracking-[0.16em] text-sol-muted">
+                            Preview appears here
+                        </span>
+                    </div>
+                </div>
             </div>
 
             {{-- Title --}}
             <div class="mt-10">
                 <div class="flex items-center justify-between gap-4">
-                    <label
-                        for="image_title"
-                        class="font-body text-[10px] font-bold uppercase tracking-[0.2em] text-sol-night"
-                    >
+                    <label for="image_title" class="font-body text-[10px] font-bold uppercase tracking-[0.2em] text-sol-night">
                         Title
                     </label>
-
                     <span class="font-body text-[9px] uppercase tracking-[0.16em] text-sol-muted">
                         255 characters
                     </span>

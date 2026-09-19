@@ -59,7 +59,7 @@
                         Profile image
                     </p>
 
-                    <div class="mt-5">
+                    <div id="avatar-preview" class="mt-5">
                         @if ($avatar)
                             <img
                                 src="{{ url($avatar->media_uri) }}"
@@ -86,8 +86,14 @@
                         name="logo"
                         type="file"
                         accept="image/jpeg,image/png,image/webp"
+                        data-image-preview
+                        data-preview-target="#avatar-preview"
+                        data-preview-img-class="size-36 rounded-full object-cover"
+                        data-preview-filename="#logo-filename"
                         class="mt-3 block w-full font-body text-xs text-sol-muted file:mr-4 file:border-0 file:bg-sol-paper file:px-4 file:py-3 file:font-body file:text-[10px] file:font-bold file:uppercase file:tracking-[0.14em] file:text-sol-mars hover:file:bg-sol-sand/60"
                     >
+
+                    <p id="logo-filename" class="mt-2 truncate font-body text-xs text-sol-mars"></p>
 
                     <p class="mt-3 font-body text-xs leading-5 text-sol-muted">
                         JPG, PNG or WEBP. Maximum 2 MB.

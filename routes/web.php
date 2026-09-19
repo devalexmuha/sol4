@@ -24,7 +24,6 @@ Route::get('/echoes', [TextPostController::class, 'index']);
 Route::get('/echoes/{textPost}', [TextPostController::class, 'show'])->whereNumber('textPost');;
 Route::get('/echoes/{textPost}/comments', [TextPostCommentController::class, 'index']);
 
-
 Route::get('/profiles', [UserProfileController::class, 'index']);
 Route::get('/profiles/{userProfile}', [UserProfileController::class, 'show']);
 Route::get('/profiles/{userProfile}/subscriptions', [SubscriptionController::class, 'index']);
@@ -76,12 +75,10 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [RegisterController::class, 'store']);
 });
 
-// fix /post/create
-// add at main index / available tags in one line, filter by them with get param do it cross site with route /search/
-// add a sprinkle of js for likes, comments and subscriptions
-// build restriction for guests: you need login to click likes comments and subscribe
+// apply claude suggested fixes
+// fix: I can not search for profiles If I'm not logged in
+// restrict to view raw json on '/sol/{imagePost}/comments'
 // fix why not all images I can publish
-// seed db with more realistic data
 // enable db cashing (reset on create update new post or every 15 minutes)
 // create custom 404 page
 // play with automated testing

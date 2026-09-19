@@ -90,7 +90,7 @@
                         </div>
 
                         <a href="{{ $base.'/subscribers' }}" class="group block transition hover:text-sol-mars">
-                            <span id="subscribers-count" class="block font-display text-2xl font-bold text-sol-night transition group-hover:text-sol-mars" id="subscribers-count">
+                            <span id="subscribers-count" class="block font-display text-2xl font-bold text-sol-night transition group-hover:text-sol-mars">
                                 {{ $user->subscribers_count }}
                             </span>
                             <span class="mt-1 block font-body text-[9px] font-bold uppercase tracking-[0.16em] text-sol-muted transition group-hover:text-sol-mars">
@@ -117,7 +117,6 @@
                                     type="button"
                                     data-endpoint="{{ $base.'/subscribers' }}"
                                     data-subscribed="{{ $isSubscribed ? 'true' : 'false' }}"
-                                    data-csrf="{{ csrf_token() }}"
                                     aria-pressed="{{ $isSubscribed ? 'true' : 'false' }}"
                                     class="{{ $isSubscribed
                                         ? 'border border-sol-line bg-sol-paper text-sol-muted hover:border-sol-mars hover:text-sol-mars'

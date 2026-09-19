@@ -47,4 +47,23 @@
     .safe-bottom {
         padding-bottom: env(safe-area-inset-bottom);
     }
+
+    /* Loading spinner used by comments.js while fetching. */
+    .sol-spinner {
+        width: 2rem;
+        height: 2rem;
+        border: 2px solid var(--color-sol-line);
+        border-top-color: var(--color-sol-orange);
+        border-radius: 9999px;
+        animation: sol-spin 0.7s linear infinite;
+    }
+
+    @keyframes sol-spin {
+        to { transform: rotate(360deg); }
+    }
+
+    /* Prevent body scroll while the auth modal is open. */
+    .sol-no-scroll {
+        overflow: hidden;
+    }
 }
