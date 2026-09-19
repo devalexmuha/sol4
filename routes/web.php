@@ -17,11 +17,11 @@ use App\Http\Controllers\UserProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ImagePostController::class, 'index']);
-Route::get('/sol/{imagePost}', [ImagePostController::class, 'show']);
+Route::get('/sol/{imagePost}', [ImagePostController::class, 'show'])->whereNumber('imagePost');;
 Route::get('/sol/{imagePost}/comments', [ImagePostCommentController::class, 'index']);
 
 Route::get('/echoes', [TextPostController::class, 'index']);
-Route::get('/echoes/{textPost}', [TextPostController::class, 'show']);
+Route::get('/echoes/{textPost}', [TextPostController::class, 'show'])->whereNumber('textPost');;
 Route::get('/echoes/{textPost}/comments', [TextPostCommentController::class, 'index']);
 
 
