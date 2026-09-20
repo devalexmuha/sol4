@@ -27,10 +27,11 @@ class ImageProfileHandler implements ShouldQueue
     {
         // crop and store image in the storage, delete tmp image.
         $imagePath = Image::fromStorage($this->tmpImagePath, disk: 'local')
+            ->orient()
             ->cover(200, 200)
             ->toWebp()
             ->quality(80)
-            ->store(path: 'avatars', disk: 'public');
+            ->storePublicly(path: 'avatars', disk: 'public');
 
         Storage::delete($this->tmpImagePath);
 

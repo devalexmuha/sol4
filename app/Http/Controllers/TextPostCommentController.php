@@ -14,6 +14,9 @@ class TextPostCommentController extends Controller
      */
     public function index(TextPost $textPost, CommentingService $commentService)
     {
+        if (! request()->expectsJson()) {
+            return redirect('/echoes/'.$textPost->id);
+        }
         return $commentService->index($textPost);
     }
 

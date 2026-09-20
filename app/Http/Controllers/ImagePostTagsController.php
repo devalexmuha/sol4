@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tag;
-use Illuminate\Http\Request;
 
 class ImagePostTagsController extends Controller
 {
@@ -12,7 +11,25 @@ class ImagePostTagsController extends Controller
      */
     public function index(Tag $tag)
     {
-        $imagePosts = $tag->imagePosts()->with('media', 'comments', 'likes', 'tags',  'user.userProfile.media')->latest()->get();
+        $imagePosts = $tag->imagePosts()
+            ->with(['media', 'tags', 'user.userProfile.media'])
+            ->withCount(['likes', 'comments'])
+            ->when(auth()->check(),
+                function ($q) {
+                    $q->withExists([
+                        'likes as viewer_has_liked' => function ($q) {
+                            $q->where('user_id', auth()->id());
+
+                        },
+                    ])->withExists([
+                        'comments as viewer_has_commented' => function ($q) {
+                            $q->where('user_id', auth()->id());
+
+                        },
+                    ]);
+                }
+            )->latest()->get();
+
         return view('image-posts.tags.index', compact('imagePosts', 'tag'));
     }
 }

@@ -12,7 +12,7 @@
     <div
         class="{{ $authenticated
             ? 'grid-cols-[1.15fr_repeat(3,minmax(0,1fr))_1.15fr]'
-            : 'grid-cols-2'
+            : 'grid-cols-3'
         }} mx-auto grid w-full max-w-300 px-4 sm:px-6 lg:px-8"
     >
         {{-- Image posts (left, wider) --}}
@@ -74,7 +74,7 @@
                     aria-hidden="true"
                 ></span>
             </a>
-
+        @endauth
             {{-- Users (dead center) --}}
             <a
                 href="{{ url('/profiles') }}"
@@ -105,7 +105,7 @@
                     aria-hidden="true"
                 ></span>
             </a>
-
+        @auth
             {{-- Create text post --}}
             <a
                 href="{{ url('/echoes/create') }}"

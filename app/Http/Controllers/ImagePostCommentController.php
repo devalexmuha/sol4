@@ -14,6 +14,9 @@ class ImagePostCommentController extends Controller
      */
     public function index(ImagePost $imagePost, CommentingService $commentService)
     {
+        if (! request()->expectsJson()) {
+            return redirect('/sol/'.$imagePost->id);
+        }
         return $commentService->index($imagePost);
     }
 

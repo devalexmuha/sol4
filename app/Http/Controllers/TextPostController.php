@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PostRequest;
 use App\Models\Tag;
 use App\Models\TextPost;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 class TextPostController extends Controller
@@ -15,7 +14,24 @@ class TextPostController extends Controller
      */
     public function index()
     {
-        $textPosts = TextPost::with(['user.userProfile.media', 'tags'])->withCount(['likes', 'comments'])->latest('updated_at')->get();
+        $textPosts = TextPost::with(['user.userProfile.media', 'tags'])
+            ->withCount(['likes', 'comments'])
+            ->when(auth()->check(),
+                function ($q) {
+                    $q->withExists([
+                        'likes as viewer_has_liked' => function ($q) {
+                            $q->where('user_id', auth()->id());
+
+                        },
+                    ])->withExists([
+                        'comments as viewer_has_commented' => function ($q) {
+                            $q->where('user_id', auth()->id());
+
+                        },
+                    ]);
+                }
+            )
+            ->latest('updated_at')->get();
 
         return view('text-posts.index', compact('textPosts'));
     }
@@ -39,7 +55,8 @@ class TextPostController extends Controller
         $textPost = $request->user()->textPosts()->create([
             'content' => $validated['content'],
         ]);
-        $textPost->tags()->attach($validated['tags']);
+        $textPost->tags()->attach($validated['tags'] ?? []);
+
         return redirect('/echoes');
     }
 
@@ -49,6 +66,11 @@ class TextPostController extends Controller
     public function show(TextPost $textPost)
     {
         $textPost->load(['user.userProfile', 'comments.user.userProfile.media', 'likes', 'tags']);
+
+        $authId = auth()->id();
+        $textPost->viewer_has_liked     = $authId && $textPost->likes->contains('user_id', $authId);
+        $textPost->viewer_has_commented = $authId && $textPost->comments->contains('user_id', $authId);
+
         return view('text-posts.show', compact('textPost'));
     }
 
@@ -60,6 +82,7 @@ class TextPostController extends Controller
         Gate::authorize('modify', $textPost);
         $textPost->load(['user.userProfile', 'tags']);
         $tags = Tag::orderBy('name')->get();
+
         return view('text-posts.edit', compact('textPost', 'tags'));
     }
 
@@ -73,8 +96,9 @@ class TextPostController extends Controller
         $textPost->update([
             'content' => $validated['content'],
         ]);
-        $textPost->tags()->sync($validated['tags']);
-        return redirect('/echoes/' . $textPost->id);
+        $textPost->tags()->sync($validated['tags'] ?? []);
+
+        return redirect('/echoes/'.$textPost->id);
     }
 
     /**
@@ -84,6 +108,7 @@ class TextPostController extends Controller
     {
         Gate::authorize('modify', $textPost);
         $textPost->delete();
+
         return redirect('/echoes');
     }
 }

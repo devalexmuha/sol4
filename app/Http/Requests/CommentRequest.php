@@ -26,4 +26,19 @@ class CommentRequest extends FormRequest
             'body' => ['required', 'string', 'max:1000', 'regex:/\S/'],
         ];
     }
+
+    /**
+     * Custom validation messages.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'body.required' => 'Your transmission cannot be empty.',
+            'body.string'   => 'A comment must be text.',
+            'body.max'      => 'Keep your transmission under 1,000 characters.',
+            'body.regex'    => 'Add at least one visible character.',
+        ];
+    }
 }

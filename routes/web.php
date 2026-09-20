@@ -74,13 +74,3 @@ Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisterController::class, 'create']);
     Route::post('/register', [RegisterController::class, 'store']);
 });
-
-// apply claude suggested fixes
-// fix: I can not search for profiles If I'm not logged in
-// restrict to view raw json on '/sol/{imagePost}/comments'
-// fix why not all images I can publish
-// enable db cashing (reset on create update new post or every 15 minutes)
-// create custom 404 page
-// play with automated testing
-// try to apply something from this: Service Pattern, SOLID, KISS, DRY
-// return view('image-posts.show', $imagePost); vs return view('image-posts.show', compact('imagePost'));

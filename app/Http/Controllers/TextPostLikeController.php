@@ -21,6 +21,6 @@ class TextPostLikeController extends Controller
      */
     public function destroy(Request $request, TextPost $textPost, LikingService $likingService)
     {
-        return $likingService->store($textPost, $request->user() ?? abort(401));
+        return $likingService->destroy($textPost, $request->user() ?? abort(401));
     }
 }

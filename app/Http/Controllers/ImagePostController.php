@@ -15,7 +15,23 @@ class ImagePostController extends Controller
      */
     public function index()
     {
-        $imagePosts = ImagePost::with(['user.userProfile.media', 'tags', 'media'])->withCount(['likes', 'comments'])->latest('updated_at')->get();
+        $imagePosts = ImagePost::with(['user.userProfile.media', 'tags', 'media'])
+            ->withCount(['likes', 'comments'])
+            ->when(auth()->check(),
+                function ($q)
+                {
+                    $q->withExists([
+                        'likes as viewer_has_liked' => function ($q) {
+                             $q->where('user_id', auth()->id());
+
+                    }])->withExists([
+                        'comments as viewer_has_commented' => function ($q) {
+                            $q->where('user_id', auth()->id());
+
+                    }]);
+                }
+            )->latest('updated_at')->get();
+
         return view('image-posts.index', compact('imagePosts'));
     }
 
@@ -25,6 +41,7 @@ class ImagePostController extends Controller
     public function create()
     {
         $tags = Tag::orderBy('name')->get();
+
         return view('image-posts.create', compact('tags'));
     }
 
@@ -38,7 +55,7 @@ class ImagePostController extends Controller
         $postData = [
             'image_title' => $validated['image_title'],
             'tmp_image_path' => $request->image('image')->store('tmp', 'local'),
-            'tags' => $validated['tags'],
+            'tags' => $validated['tags'] ?? [],
         ];
         ImagePostHandler::dispatch($user, $postData);
 
@@ -51,6 +68,11 @@ class ImagePostController extends Controller
     public function show(ImagePost $imagePost)
     {
         $imagePost->load(['user.userProfile.media', 'comments.user.userProfile.media', 'likes', 'tags', 'media']);
+
+        $authId = auth()->id();
+        $imagePost->viewer_has_liked     = $authId && $imagePost->likes->contains('user_id', $authId);
+        $imagePost->viewer_has_commented = $authId && $imagePost->comments->contains('user_id', $authId);
+
         return view('image-posts.show', compact('imagePost'));
     }
 
@@ -62,6 +84,7 @@ class ImagePostController extends Controller
         Gate::authorize('modify', $imagePost);
         $imagePost->load(['tags', 'media']);
         $tags = Tag::orderBy('name')->get();
+
         return view('image-posts.edit', compact('imagePost', 'tags'));
     }
 
@@ -75,9 +98,9 @@ class ImagePostController extends Controller
         $imagePost->update([
             'image_title' => $validated['image_title'],
         ]);
-        $imagePost->tags()->sync($validated['tags']);
+        $imagePost->tags()->sync($validated['tags'] ?? []);
 
-        return redirect('/sol/' . $imagePost->id);
+        return redirect('/sol/'.$imagePost->id);
     }
 
     /**

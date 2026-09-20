@@ -18,8 +18,8 @@ class ImagePostHandler implements ShouldQueue
     public function __construct(
         private readonly User $user,
         private readonly array $postData
-    )
-    {}
+    ) {
+    }
 
     /**
      * Execute the job.
@@ -28,11 +28,12 @@ class ImagePostHandler implements ShouldQueue
     {
         // crop store delete tmp image
         $tmpImagePath = $this->postData['tmp_image_path'];
-        $imagePath = Image::fromStorage($tmpImagePath, disk: 'local')
-                          ->cover(900, 1200)
-                          ->toWebp()
-                          ->quality(80)
-                          ->storePublicly(path: 'images', disk: 'public');
+        $imagePath    = Image::fromStorage($tmpImagePath, disk: 'local')
+                             ->orient()
+                             ->cover(900, 1200)
+                             ->toWebp()
+                             ->quality(80)
+                             ->storePublicly(path: 'images', disk: 'public');
 
         Storage::delete($tmpImagePath);
 
@@ -46,7 +47,6 @@ class ImagePostHandler implements ShouldQueue
             'media_alt' => $this->postData['image_title'],
         ]);
 
-        $post->tags()->sync($this->postData['tags']);
-
+        $post->tags()->sync($this->postData['tags'] ?? []);
     }
 }
